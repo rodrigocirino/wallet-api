@@ -4,7 +4,7 @@
   "description": "EBANX Software Engineer Take-home assignment",
   "main": "index.js",
   "scripts": {
-    "start": "node server.js",
+    "start": "node index.js",
     "dev": "nodemon server.js --ignore __tests__",
     "test": "jest"
   },

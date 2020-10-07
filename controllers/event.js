@@ -6,12 +6,23 @@ module.exports = function (app) {
 
     //curl http://localhost:3000/event -X POST -H "Content-type: application/json" -d '{"type":"deposit", "amount":10, "destination":"100"}'
     app.post('/event', function (req, res) {
-        console.log("Event: POST # Create account with initial balance");
+        console.log("Event: POST # Create account with initial balance", req.body.type);
 
-        const wallet = operations.createAccount(req.body);
-        console.log(wallet);
+        switch (req.body.type) {
+            case 'deposit':
+                console.log("Depositing");
+                const wallet = operations.createAccount(req.body);
+                console.log(wallet);
+                break;
+            case 'withdraw':
+                console.log("Withdrawing");
+                break;
+            case 'transfer':
+                console.log("Transfering");
+                break;
+        }
 
-        res.send(wallet);
+        res.send("Ok");
     })
 
 

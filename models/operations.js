@@ -1,35 +1,36 @@
-var wallet = require("../models/Wallet");
+var app = require('../config/custom-express')();
+var Wallet = require('../models/Wallet');
 
-function getBalance(destination) {
-    //if destination is not found error, else ok
-    //Mock:
-    wallet.accountId = 100;
+function getBalance(account_id) {
+    //if account_id is not found error, else ok
 
-    if (destination == undefined || destination != wallet.accountId) {
+    console.log(parseInt(account_id), wallet)
+    if (wallet != 'undefined' && (parseInt(account_id) == parseInt(wallet._destination))) {
         //404	Get balance for non-existing account  GET /balance?account_id=1234
-        return null;
+        return wallet;
     } else {
         //200 Get balance for existing account      GET /balance?account_id=100
-        return wallet;
+        return null;
     }
-};
+}
 
-function createAccount(wallet) {
+function createAccount(client) {
 
     //if destination is not found error, else ok
-    if (wallet == undefined) {
+    if (client.destination == undefined) {
         return null;
     } else {
-        mainAccount.amount = wallet.amount;
-        mainAccount.destination = wallet.destination;
+        wallet = new Wallet();
+        wallet.amount = client.amount;
+        wallet.destination = client.destination;
+        return wallet;
     }
-    //if the same return the same
-    return mainAccount;
+    //if account already exist return the same
 }
 
 function deposit(amount, destination) {
     //if destination is not found error, else ok
-    return mainAccount;
+    return wallet;
 }
 
 

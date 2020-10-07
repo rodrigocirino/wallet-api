@@ -1,11 +1,13 @@
 var app = require('../config/custom-express')();
 var Wallet = require('../models/Wallet');
+var wallet;
 
-function getBalance(account_id) {
+function getAccount(account_id) {
     //if account_id is not found error, else ok
 
-    console.log(parseInt(account_id), wallet)
-    if (wallet != 'undefined' && (parseInt(account_id) == parseInt(wallet._destination))) {
+    console.log(account_id, wallet);
+    if (wallet != undefined &&
+        (parseInt(account_id) == parseInt(wallet.destination))) {
         //404	Get balance for non-existing account  GET /balance?account_id=1234
         return wallet;
     } else {
@@ -14,22 +16,18 @@ function getBalance(account_id) {
     }
 }
 
-function createAccount(client) {
-
-    //if destination is not found error, else ok
-    if (client.destination == undefined) {
-        return null;
-    } else {
-        wallet = new Wallet();
-        wallet.amount = client.amount;
-        wallet.destination = client.destination;
-        return wallet;
+function deposit(body) {
+    //if destination is not found create a new account, else ok
+    var result = this.getAccount(body.destination);
+    if (result != null) {
+        wallet._amount = wallet.amount + body.amount;
     }
-    //if account already exist return the same
-}
-
-function deposit(amount, destination) {
-    //if destination is not found error, else ok
+    //account found deposit the amount
+    else {
+        wallet = new Wallet();
+        wallet._destination = body.destination;
+        wallet._amount = body.amount;
+    }
     return wallet;
 }
 
@@ -43,8 +41,7 @@ function transfer(amount, destination) {
     //if destination is not found error, else ok
 }
 
-module.exports.getBalance = getBalance;
+module.exports.getAccount = getAccount;
 module.exports.deposit = deposit;
 module.exports.withdraw = withdraw;
 module.exports.transfer = transfer;
-module.exports.createAccount = createAccount;

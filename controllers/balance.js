@@ -3,7 +3,7 @@ var operations = require('../models/operations');
 module.exports = function (app) {
 
   app.get('/balance', function (req, res) {
-    const wallet = operations.getBalance(req.query.account_id);
+    const wallet = operations.getAccount(req.query.account_id);
     console.log('GET /balance', wallet)
 
     if (wallet == null) {

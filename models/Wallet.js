@@ -2,20 +2,21 @@
 class Wallet {
 
     constructor() {
-
+        this.amount = 0;
+        this.destination = null;
     }
 
-    get amount() {
-        return this._amount
+    get _amount() {
+        return this.amount
     }
-    set amount(valor) {
-        this._amount = valor;
+    set _amount(valor) {
+        this.amount = valor;
     }
-    get destination() {
-        return this._destination
+    get _destination() {
+        return this.destination
     }
-    set destination(valor) {
-        this._destination = valor;
+    set _destination(valor) {
+        this.destination = valor;
     }
 }
 

@@ -34,6 +34,3 @@
 | consign | 0.1.6 |
 
 > PS: Using ngrok, all tests turned green on the Ipkiss Tester.
-
-> Git Flow
-![Git Flow](git_flow.png)

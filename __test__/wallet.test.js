@@ -2,8 +2,7 @@ const request = require('supertest');
 var app = require('../config/custom-express')();
 var operations = require('../models/operations');
 
-describe('Create account with initial balance', () => {
-
+describe('Ebanx Test Suite - Wallet API', () => {
 
   // 200 Reset the state before starting POST / reset tests
   it('Reset the state before starting', async () => {
@@ -27,7 +26,7 @@ describe('Create account with initial balance', () => {
   });
 
   // 201 Deposit in existing account POST / event {"type": "deposit", "amount": 10, "destination": "100"}
-  test('Deposit plus $10 in a account 100', () => {
+  test('Deposit plus amount in a destination account', () => {
 
     var params = { "type": "deposit", "amount": 10, "destination": "100" };
     const response = operations.deposit(params);
@@ -50,7 +49,7 @@ describe('Create account with initial balance', () => {
   });
 
   // 404 Get balance for non-existent GET / balance account? account_id = 1234
-  test('Check if a account exists e return it the ammount', () => {
+  test('Check if a account NOT exists e return it the ammount', () => {
     var account_id = 1234
     const response = operations.getAccount(account_id);
     console.log("GET Balance: ", response);
@@ -59,7 +58,7 @@ describe('Create account with initial balance', () => {
   });
 
   // 404 Withdraw from a non-existent account POST / event {"type": "withdraw", "origin": "200", "amount": 10}
-  test('Withdraw in a account', () => {
+  test('Withdraw from a non-existent account', () => {
 
     var params = { "type": "withdraw", "origin": "200", "amount": 10 };
     const response = operations.withdraw(params);
@@ -69,7 +68,7 @@ describe('Create account with initial balance', () => {
   });
 
   // 201 Withdraw from existing account POST / event {"type": "withdraw", "origin": "100", "amount": 5}
-  test('Withdraw in a account', () => {
+  test('Withdraw from existing account', () => {
 
     var params = { "type": "withdraw", "origin": "100", "amount": 5 };
     const response = operations.withdraw(params);
@@ -81,7 +80,7 @@ describe('Create account with initial balance', () => {
   });
 
   // 201 Transfer from existing account POST / event {"type": "transfer", "origin": "100", "amount": 15, "destination": "300"}
-  test('Trasnfer to origin to another destination', () => {
+  test('Transfer from origin account to destination account', () => {
 
     var params = { "type": "transfer", "origin": "100", "amount": 15, "destination": "300" };
     const response = operations.transfer(params);
@@ -95,14 +94,13 @@ describe('Create account with initial balance', () => {
   });
 
   // 404 Transfer of non-existent account POST / event {"type": "transfer", "origin": "200", "amount": 15, "destination": "300"}
-  test('Trasnfer to origin to another destination', () => {
+  test('NO Transfer if no-existent account OR the amount is insufficient', () => {
 
     var params = { "type": "transfer", "origin": "200", "amount": 15, "destination": "300" };
     const response = operations.transfer(params);
     console.log("POST Withdraw INExistent Account: ", response);
     //400 0
-    expect(response).not.toBeNull();
-    expect(response.origin).toBeNull();
+    expect(response).toBeNull();
   });
 
 

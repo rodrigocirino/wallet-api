@@ -57,10 +57,12 @@ function transfer(body) {
     var origin = { 'origin': body.origin, 'amount': body.amount };
     origin = this.withdraw(origin);
 
-    var destination = { 'destination': body.destination, 'amount': body.amount };
-    destination = this.deposit(body);
-
-    return { origin, destination };
+    if (origin != null) {//No transfer
+        var destination = { 'destination': body.destination, 'amount': body.amount };
+        destination = this.deposit(body);
+        return { origin, destination };
+    }
+    return null;
 }
 
 

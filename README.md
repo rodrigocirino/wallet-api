@@ -32,6 +32,8 @@
 | supertest | 5.0.0 |
 | body-parser | 1.19.0 |
 | consign | 0.1.6 |
-|||
 
 > PS: Using ngrok, all tests turned green on the Ipkiss Tester.
+
+> Git Flow
+![Git Flow](git_flow.png)

@@ -85,7 +85,7 @@ describe('Create account with initial balance', () => {
 
     var params = { "type": "transfer", "origin": "100", "amount": 15, "destination": "300" };
     const response = operations.transfer(params);
-    console.log("POST Withdraw: ", response);
+    console.log("POST Withdraw Existent Account: ", response);
     //201 {'origin': {id:100, balance:0}, 'destination': {'id':300, 'balance':15}}
     expect(response).not.toBeNull();
     expect(response.origin.destination).toEqual(params.origin);
@@ -95,7 +95,15 @@ describe('Create account with initial balance', () => {
   });
 
   // 404 Transfer of non-existent account POST / event {"type": "transfer", "origin": "200", "amount": 15, "destination": "300"}
-  //404 0
+  test('Trasnfer to origin to another destination', () => {
+
+    var params = { "type": "transfer", "origin": "200", "amount": 15, "destination": "300" };
+    const response = operations.transfer(params);
+    console.log("POST Withdraw INExistent Account: ", response);
+    //400 0
+    expect(response).not.toBeNull();
+    expect(response.origin).toBeNull();
+  });
 
 
 })

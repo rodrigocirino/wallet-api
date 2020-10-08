@@ -18,6 +18,10 @@ function getAccount(account_id) {
     return null;
 }
 
+/*
+ * As the creation account endpoint is the same
+ *   as the deposit I kept in the same function
+ */
 function deposit(body) {
     //if destination is not found create a new account, else ok
     var client = this.getAccount(body.destination);

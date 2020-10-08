@@ -1,47 +1,71 @@
 var app = require('../config/custom-express')();
 var Wallet = require('../models/Wallet');
-var wallet;
+var allWallet = [];
+
 
 function getAccount(account_id) {
     //if account_id is not found error, else ok
 
-    console.log(account_id, wallet);
-    if (wallet != undefined &&
-        (parseInt(account_id) == parseInt(wallet.destination))) {
-        //404	Get balance for non-existing account  GET /balance?account_id=1234
-        return wallet;
-    } else {
-        //200 Get balance for existing account      GET /balance?account_id=100
-        return null;
+    for (var key in allWallet) {
+        var client = allWallet[key];
+        console.log("Found wallet -->", allWallet[key]);
+        if (client.destination != undefined &&
+            (parseInt(account_id) == parseInt(client.destination))) {
+            //200 Get balance for existing account      GET /balance?account_id=100
+            return client;
+        }
     }
+    return null;
 }
 
 function deposit(body) {
     //if destination is not found create a new account, else ok
-    var result = this.getAccount(body.destination);
-    if (result != null) {
-        wallet._amount = wallet.amount + body.amount;
+    var client = this.getAccount(body.destination);
+    if (client != null) {
+        client._amount = client.amount + body.amount;
     }
     //account found deposit the amount
     else {
-        wallet = new Wallet();
-        wallet._destination = body.destination;
-        wallet._amount = body.amount;
+        client = new Wallet();
+        client._destination = body.destination;
+        client._amount = body.amount;
+        allWallet.push(client);
     }
-    return wallet;
+    return client;
 }
 
 
-function withdraw(amount, destination) {
+function withdraw(body) {
     //if account is less amount error, else ok
+    //if destination is not found create a new account, else ok
+    var client = this.getAccount(body.origin);
+    if (client != null && client.amount >= body.amount) {
+        client._amount = client.amount - body.amount;
+    } else {
+        return null;
+    }
+    return client;
 }
 
 
-function transfer(amount, destination) {
-    //if destination is not found error, else ok
+function transfer(body) {
+
+    var origin = { 'origin': body.origin, 'amount': body.amount };
+    origin = this.withdraw(origin);
+
+    var destination = { 'destination': body.destination, 'amount': body.amount };
+    destination = this.deposit(body);
+
+    return { origin, destination };
+}
+
+
+function reset() {
+    allWallet = [];
 }
 
 module.exports.getAccount = getAccount;
 module.exports.deposit = deposit;
 module.exports.withdraw = withdraw;
 module.exports.transfer = transfer;
+module.exports.reset = reset;

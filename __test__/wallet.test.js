@@ -9,7 +9,7 @@ describe('Ebanx Test Suite - Wallet API', () => {
     const response = await request(app).post('/reset');
     //200 Ok
     expect(response.status).toEqual(200);
-    expect(response.text).toEqual('Ok');
+    expect(response.text).toEqual('OK');
   });
 
   // 201 Create account with opening balance POST / event {"type": "deposit", "amount": 10, "destination": "100"}

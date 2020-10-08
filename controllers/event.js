@@ -16,7 +16,8 @@ module.exports = function (app) {
                 if (dep != null) {
                     //201   Criar conta com saldo inicial  POST /event {"type":"deposit", "amount":10, "destination":"100"}
                     //201	Depósito na conta existente POST /event {"type":"deposit", "amount":10, "destination":"100"}
-                    res.status(201).send(dep);
+                    var data = { "destination": { "id": dep.destination, "balance": dep.amount } }
+                    res.status(201).send(data);
                 } else {
                     res.status(404).send('0');
                 }
@@ -29,7 +30,8 @@ module.exports = function (app) {
                     res.status(404).send('0');
                 } else {
                     //201	Retirar da conta existente		    POST /event {"type":"withdraw", "origin":"100", "amount":5}
-                    res.status(201).send(withd);
+                    var data = { "origin": { "id": withd.destination, "balance": withd.amount } };
+                    res.status(201).send(data);
                 }
                 break;
             case 'transfer':
@@ -40,7 +42,17 @@ module.exports = function (app) {
                     res.status(404).send('0');
                 } else {
                     //201	Transferência da conta existente	POST /event {"type":"transfer", "origin":"100", "amount":15, "destination":"300"}
-                    res.status(201).send(transf);
+                    var data = {
+                        "origin": {
+                            "id": transf.origin.destination,
+                            "balance": transf.origin.amount
+                        },
+                        "destination": {
+                            "id": transf.destination.destination,
+                            "balance": transf.destination.amount
+                        }
+                    }
+                    res.status(201).send(data);
                 }
                 break;
         }

@@ -1,11 +1,11 @@
+var operations = require('../models/operations');
+
 module.exports = function (app) {
 
-    //curl http://localhost:3000/reset -X POST -v
     app.post('/reset', function (req, res) {
-        console.log("Reset: POST # Reset state before starting tests");
+        const result = operations.reset();
+        console.log('POST /reset : Empty result:', result)
+        res.status(200).send('Ok');
+    });
 
-        var wallet = {};
-
-        res.send(wallet);
-    })
 }

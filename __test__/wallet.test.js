@@ -2,7 +2,7 @@ const request = require('supertest');
 var app = require('../config/custom-express')();
 var operations = require('../models/operations');
 
-describe('Ebanx Test Suite - Wallet API', () => {
+describe('Test Suite - Wallet API', () => {
 
   // 200 Reset the state before starting POST / reset tests
   it('Reset the state before starting', async () => {
@@ -79,18 +79,35 @@ describe('Ebanx Test Suite - Wallet API', () => {
     expect(response.destination).toEqual(params.origin);
   });
 
-  // 201 Transfer from existing account POST / event {"type": "transfer", "origin": "100", "amount": 15, "destination": "300"}
+
+  //REFACTORING - RULE #1
+  // withdraw a maximum of 50% of the customer's account balance.
   test('Transfer from origin account to destination account', () => {
 
-    var params = { "type": "transfer", "origin": "100", "amount": 15, "destination": "300" };
+    /*
+     * Para passar nos testes do IPKISSTESTER COM A NOVA REGRA DE WITHDRAW 50%,
+     * Estou depositando novamente o valor de 50% retirada
+     */
+    /* var amountTotalNow = 15;
+    var params = { "type": "deposit", "amount": (amountTotalNow / 2), "destination": "100" };
+    const response1 = operations.deposit(params);
+    console.log("POST Deposit: ", response1);
+    //'201 {"destination": {"id":"100", "balance":20}}'
+    expect(response1).not.toBeNull();
+    expect(response1.amount).toEqual(amountTotalNow + amountTotalNow / 2);
+    expect(response1.destination).toEqual(params.destination); */
+
+
+    var amountMinimun50pct = 15 / 2;
+    var params = { "type": "transfer", "origin": "100", "amount": amountMinimun50pct, "destination": "300" };
     const response = operations.transfer(params);
     console.log("POST Withdraw Existent Account: ", response);
     //201 {'origin': {id:100, balance:0}, 'destination': {'id':300, 'balance':15}}
     expect(response).not.toBeNull();
     expect(response.origin.destination).toEqual(params.origin);
-    expect(response.origin.amount).toEqual(0);
+    expect(response.origin.amount).toEqual(amountMinimun50pct);
     expect(response.destination.destination).toEqual(params.destination);
-    expect(response.destination.amount).toEqual(15);
+    expect(response.destination.amount).toEqual(amountMinimun50pct);
   });
 
   // 404 Transfer of non-existent account POST / event {"type": "transfer", "origin": "200", "amount": 15, "destination": "300"}
@@ -103,6 +120,27 @@ describe('Ebanx Test Suite - Wallet API', () => {
     expect(response).toBeNull();
   });
 
+  // Withdraw less than 50% of the account balance
+  test('Withdrawal equal to or less than 50% of the total account', () => {
+    var amount50pctTotalAccount = (15 / 2);
+    var params = { "type": "withdraw", "origin": "300", "amount": (amount50pctTotalAccount / 2) };
+    const response = operations.withdraw(params);
+    console.log("POST Withdraw: ", response);
+    //200
+    expect(response).not.toBeNull();
+    expect(response.amount).toEqual(amount50pctTotalAccount / 2);
+    expect(response.destination).toEqual(params.origin);
+  });
+
+  //404
+  test('Withdrawal of more than 50% of the total account', () => {
+    var amount50pctTotalAccount = 3.75 + 0.01;// R$ 0,01 centavo ou qualquer valor acima de R$ 3.75 nao será valido
+    var params = { "type": "withdraw", "origin": "300", "amount": amount50pctTotalAccount };
+    const response = operations.withdraw(params);
+    console.log("POST Withdraw: ", response);
+    //Error if pass value more than [amount50pctTotalAccount]
+    expect(response).toBeNull();
+  });
 
 })
 

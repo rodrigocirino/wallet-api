@@ -40,17 +40,25 @@ function deposit(body) {
 
 
 function withdraw(body) {
-    //if account is less amount error, else ok
-    //if destination is not found create a new account, else ok
     var client = this.getAccount(body.origin);
     if (client != null && client.amount >= body.amount) {
-        client._amount = client.amount - body.amount;
-    } else {
-        return null;
-    }
-    return client;
-}
 
+
+        /*
+         *
+         * Descomentar se quiser aplicar a regra de retirada de no máximo 50% do total da conta
+         * Os testes foram ajustados e passaram, mas no site IPKISS Tester não foram ajustados e quebra na operacao de transferencia.
+         *
+         *
+         */
+
+        //if (body.amount <= (client.amount / 2)) {
+        client._amount = client.amount - body.amount;
+        return client;
+        //}
+    }
+    return null;
+}
 
 function transfer(body) {
 

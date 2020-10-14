@@ -1,28 +1,15 @@
 {
   "name": "wallet-api",
   "version": "1.0.0",
-  "description": "EBANX Software Engineer Take-home assignment",
+  "description": "Software Engineer Take-home assignment",
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "dev": "nodemon server.js --ignore __tests__",
+    "dev": "nodemon index.js --ignore __tests__",
     "test": "jest  --forceExit"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/rodrigocirino/wallet-api.git"
-  },
-  "keywords": [
-    "api",
-    "tdd",
-    "wallet"
-  ],
   "author": "Rodrigo Cirino",
   "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/rodrigocirino/wallet-api/issues"
-  },
-  "homepage": "https://github.com/rodrigocirino/wallet-api#readme",
   "dependencies": {
     "body-parser": "^1.19.0",
     "consign": "^0.1.6",

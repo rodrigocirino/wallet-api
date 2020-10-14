@@ -2,7 +2,7 @@
 
 > Author: Rodrigo Cirino de Andrade
 >
-> Description: EBANX Software Engineer Take-home assignment
+> Description: Software Engineer Take-home assignment
 
 ---
 

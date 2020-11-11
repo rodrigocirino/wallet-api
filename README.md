@@ -1,8 +1,6 @@
 # Wallet-API
 
-> Author: Rodrigo Cirino de Andrade
->
-> Description: Software Engineer Take-home assignment
+> Author: Rodrigo Cirino
 
 ---
 

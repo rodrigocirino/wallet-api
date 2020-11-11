@@ -31,4 +31,4 @@
 | body-parser | 1.19.0 |
 | consign | 0.1.6 |
 
-> PS: Using ngrok, all tests turned green on the Ipkiss Tester.
+> PS: Using ngrok, all tests turned green
